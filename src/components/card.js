@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const Card = (article) => {
     // TASK 5
     // ---------------------
@@ -48,31 +50,34 @@ const Card = (article) => {
   
   }
   
+  // TASK 6
+  // ---------------------
+  // Implement this function that takes a css selector as its only argument.
+  // It should obtain articles from this endpoint: `https://lambda-times-api.herokuapp.com/articles`
+  // However, the articles do not come organized in a single, neat array. Inspect the response closely!
+  // Create a card from each and every article object in the response, using the Card component.
+  // Append each card to the element in the DOM that matches the selector passed to the function.
+  //
+
   const cardAppender = (selector) => {
-    // TASK 6
-    // ---------------------
-    // Implement this function that takes a css selector as its only argument.
-    // It should obtain articles from this endpoint: `https://lambda-times-api.herokuapp.com/articles`
-    // However, the articles do not come organized in a single, neat array. Inspect the response closely!
-    // Create a card from each and every article object in the response, using the Card component.
-    // Append each card to the element in the DOM that matches the selector passed to the function.
-    //
-  
-    let results = axios.get(`https://lambda-times-api.herokuapp.com/articles`)
-  
-    results.then((value)=>{
-  
-      let list = value.data.articles
-      for(let key in list){
-        list[key].forEach(element => {
-          let test = Card(element)
-          let cardContainer = document.querySelector(selector)
-          cardContainer.appendChild(test)
-        });
-      }
-  
+
+    const cardsContainer = document.querySelector(selector);
+
+    // eslint-disable-next-line no-undef
+    axios.get('https://lambda-times-api.herokuapp.com/articles')
+    .then((res)=>{
+    console.log('Article',res.data.articles);
+    const dataObj = res.data.articles
+    for (const [key, value] of Object.entries(dataObj)) {
+      value.forEach(article => {
+        cardsContainer.append(Card(article));
+      });
+    }
     })
-  
-  }
-  
-  export { Card, cardAppender }
+    
+    .catch((err)=>{
+    console.log('error', err)
+    });
+}
+
+export { Card, cardAppender }
