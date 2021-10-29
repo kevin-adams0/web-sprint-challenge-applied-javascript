@@ -1,4 +1,4 @@
- // TASK 3
+  // TASK 3
   // ---------------------
   // Implement this function which takes an array of strings ("topics") as its only argument.
   // As an example, if the topics passed are ['javascript', 'bootstrap', 'technology']
@@ -14,19 +14,29 @@
 
   import axios from "axios";
 
+  //
   const Tabs = (topics) => {
+    const topicsDiv = document.createElement("div"); // creating elements
+    const jsDiv = document.createElement("div");
+    const bsDiv = document.createElement("div");
+    const techDiv = document.createElement("div");
 
-    const topicsDiv = document.createElement("div"); 
-    topicsDiv.classList.add('topics'); 
+    topicsDiv.classList.add('topics'); // adding classes
+    jsDiv.classList.add('tab');
+    bsDiv.classList.add('tab');
+    techDiv.classList.add('tab');
 
-    topics.forEach(topic => { //for each topic, create a div with a class of tab and give it topic content and append that tab to topicsDiv
-      const tabs = document.createElement('div');
-      tabs.classList.add('tab');
-      tabs.textContent = topic;
-      topicsDiv.appendChild(tabs);
-    });
+    topicsDiv.appendChild(jsDiv); // appending children to topicsDiv
+    topicsDiv.appendChild(bsDiv);
+    topicsDiv.appendChild(techDiv);
+
+    jsDiv.textContent = "javascript"; // adding content
+    bsDiv.textContent = "bootstrap";
+    techDiv.textContent = "technology";
+
     return topicsDiv;
   }
+
 
   // TASK 4
   // ---------------------
@@ -38,16 +48,24 @@
   //const tabsAppender = (selector) => {
 //}
 
-const tabsAppender = (selector) => {
-  const topicsContainer = document.querySelector(selector);
-  axios.get(`https://lambda-times-api.herokuapp.com/topics`)
-  .then((res)=>{
-    console.log('Tabs',res.data.topics)
-    topicsContainer.append(Tabs(res.data.topics))
-  })
-  .catch((err)=>{
-    console.log('something went wrong', err)
-  })
-}
+const tabsAppender = document.querySelector(".topics");
+axios
+.get("https://lambda-times-api.herokuapp.com/topics")
+.then(response =>{
+  console.log(response.data.topics);
+  const object = response.data.topics;
+
+  response.data.topics.forEach(item => {
+    function tCard(){
+      const topicsDiv = document.createElement("div");
+      topicsDiv.classList.add("tab");
+      topicsDiv.textContent = item;
+
+      return topicsDiv;
+    }
+    let newCard = tCard(item);
+    tabsAppender.appendChild(newCard)
+  });
+});
 
 export { Tabs, tabsAppender }

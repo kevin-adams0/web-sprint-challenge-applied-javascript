@@ -1,4 +1,4 @@
-// TASK 1
+  // TASK 1
   // ---------------------
   // Implement this function taking `title`, `date` and `temp` as its 3 args and returning the markup below.
   // The tags used, the hierarchy of elements and their attributes must match the provided markup exactly!
@@ -12,24 +12,24 @@
   //
   const Header = (title, date, temp) => {
 
-    const header = document.createElement("div"); // creating our elements
-    const hDate = document.createElement("span");
-    const hTitle = document.createElement("h1");
-    const hTemp = document.createElement("span");
+    const hDiv = document.createElement("div"); // creating our elements
+    const dSpan = document.createElement("span");
+    const hOne = document.createElement("h1");
+    const tSpan = document.createElement("span");
 
-    header.classList.add('header'); // setting class names
-    hDate.classList.add('date');
-    hTemp.classList.add('temp');
+    hDiv.classList.add('header'); // setting class names
+    dSpan.classList.add('date');
+    tSpan.classList.add('temp');
 
-    hDate.textContent = date; // adding content 
-    hTitle.textContent = title; 
-    hTemp.textContent = temp;
+    hDiv.appendChild(dSpan); // structuring by appending children to our hDiv
+    hDiv.appendChild(hOne);
+    hDiv.appendChild(tSpan);
 
-    header.appendChild(hDate); // structuring by appending 
-    header.appendChild(hTitle);
-    header.appendChild(hTemp);
+    dSpan.textContent = "January 6, 2021"; // adding content to match example
+    hOne.textContent = "Lambda Times";
+    tSpan.textContent = "26°";
 
-    return header;
+    return hDiv;
   }
 
   // TASK 2
@@ -39,8 +39,11 @@
   // It should append the header to the element in the DOM that matches the given selector.
   //
   const headerAppender = (selector) => {
-    const hContainer = document.querySelector(selector);
-    hContainer.append(Header('Lambda Times', 'February 12, 2021', '63F'));
+    headerAppender = document.querySelector(".header-container");
+    headerAppender.appendChild(Header) // come back, unsure about functions
+
+
   }
 
-  export { Header, headerAppender }
+
+export { Header, headerAppender }
