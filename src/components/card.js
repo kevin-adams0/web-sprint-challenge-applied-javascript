@@ -1,4 +1,3 @@
-const Card = (article) => {
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,17 +16,68 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
-}
+  import axios from 'axios';
 
-const cardAppender = (selector) => {
-  // TASK 6
-  // ---------------------
-  // Implement this function that takes a css selector as its only argument.
-  // It should obtain articles from this endpoint: `http://localhost:5000/api/articles` (test it in Postman/HTTPie!).
-  // However, the articles do not come organized in a single, neat array. Inspect the response closely!
-  // Create a card from each and every article object in the response, using the Card component.
-  // Append each card to the element in the DOM that matches the selector passed to the function.
-  //
-}
-
-export { Card, cardAppender }
+  const Card = (article) => {
+  
+      const card = document.createElement('div'); 
+      const cardHeadline = document.createElement('div');
+      const cardAuthor= document.createElement('div');
+      const imgContainer= document.createElement('div');
+      const img = document.createElement('img');
+      const authorName = document.createElement('span');
+  
+      card.classList.add('card');
+      cardHeadline.classList.add('headline');
+      cardAuthor.classList.add('author');
+      imgContainer.classList.add('img-container');
+  
+      card.addEventListener('click', ()=>{
+          console.log(article.headline)
+      })
+  
+      cardHeadline.textContent = article.headline;
+      img.setAttribute('src', article.authorPhoto);
+      authorName.textContent = `Author: ${article.authorName}`;
+  
+      card.appendChild(cardHeadline);
+      card.appendChild(cardAuthor);
+      cardAuthor.appendChild(imgContainer);
+      cardAuthor.appendChild(authorName);
+      imgContainer.appendChild(img);
+  
+      return card;
+  }
+  
+  
+  
+    // TASK 6
+    // ---------------------
+    // Implement this function that takes a css selector as its only argument.
+    // It should obtain articles from this endpoint: `https://lambda-times-api.herokuapp.com/articles`
+    // However, the articles do not come organized in a single, neat array. Inspect the response closely!
+    // Create a card from each and every article object in the response, using the Card component.
+    // Append each card to the element in the DOM that matches the selector passed to the function.
+    //
+  
+  const cardAppender = (selector) => {
+  
+      const cardsContainer = document.querySelector(selector);
+  
+      axios.get('https://lambda-times-api.herokuapp.com/articles')
+      .then((res)=>{
+      console.log('Article',res.data.articles);
+      const dataObj = res.data.articles
+      for (const [key, value] of Object.entries(dataObj)) {
+        value.forEach(article => {
+          cardsContainer.append(Card(article));
+        });
+      }
+      })
+  
+      .catch((err)=>{
+      console.log('error', err)
+      });
+  }
+  
+  export { Card, cardAppender }
